@@ -1,6 +1,7 @@
 use newsletter::configuration::{get_configuration, DatabaseSettings};
 use newsletter::startup::run;
 use newsletter::telemetry::{get_subscriber, init_subscriber};
+use secrecy::Secret;
 use sqlx::{Connection, Executor, PgConnection, PgPool};
 use std::net::TcpListener;
 use std::sync::LazyLock;
@@ -125,7 +126,7 @@ pub async fn configure_database(config: &DatabaseSettings) -> PgPool {
     let maintenance_settings = DatabaseSettings {
         database_name: "postgres".into(),
         username: "postgres".into(),
-        password: "password".into(),
+        password: Secret::new("password".to_string()),
         ..config.clone()
     };
 
