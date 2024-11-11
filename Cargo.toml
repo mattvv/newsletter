@@ -8,7 +8,9 @@ path = "src/lib.rs"
 
 [dependencies]
 actix-web = "4"
+env_logger = "0.9"
 config = "0.14"
+log = "0.4"
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 serde = { version = "1.0", features = ["derive"] }
 uuid = { version = "1", features = ["v4"] }
