@@ -3,7 +3,7 @@ use std::net::TcpListener;
 use newsletter::configuration::get_configuration;
 use newsletter::startup::run;
 use newsletter::telemetry::{get_subscriber, init_subscriber};
-use sqlx::PgPool;
+use sqlx::postgres::PgPoolOptions;
 
 #[tokio::main]
 async fn main() -> Result<(), std::io::Error> {
@@ -15,8 +15,8 @@ async fn main() -> Result<(), std::io::Error> {
         "{}:{}",
         configuration.application.host, configuration.application.port
     );
-    let connection_pool = PgPool::connect_lazy(&configuration.database.connection_string())
-        .expect("Failed to connect to Postgres.");
+    let connection_pool =
+        PgPoolOptions::new().connect_lazy_with(configuration.database.connect_options());
 
     let listener = TcpListener::bind(address)?;
     run(listener, connection_pool)?.await
